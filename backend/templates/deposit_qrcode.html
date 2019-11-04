@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>后台管理系统</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+    }
+
+    body,
+    html {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background: #ececec;
+      /*background: #e5373c;*/
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: 90%;
+      height: 100%;
+      margin: 0 auto;
+    }
+
+
+    .type {
+      display: flex;
+      align-items: center;
+    }
+
+    .type img {
+      width: 70px;
+      vertical-align: middle;
+    }
+
+    .type span {
+      font-size: 24px;
+      color: #393D49;
+      margin-left: 20px;
+    }
+
+    .selectType {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      border-radius: 50%;
+      border: 1px solid #aaa;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .selectType i {
+      color: #fff;
+      font-size: 20px;
+    }
+
+
+
+    #lastStep {
+      background: #fff;
+      margin: 50px auto;
+      border-radius: 15px;
+      text-align: center;
+      /*display: none;*/
+      padding-bottom: 30px;
+    }
+
+    .headImg {
+      width: 65px;
+      margin: 10px auto;
+    }
+
+    .headTips {
+      color: #222;
+      font-size: 26px;
+      letter-spacing: 1px;
+      padding: 10px;
+    }
+
+    .headTips span {
+      color: #30a8fa;
+    }
+
+    .navTips {
+      color: #ff2e34;
+      font-size: 24px;
+      padding-top: 10px;
+    }
+
+    .timeCount {
+      margin: 10px auto;
+      width: 70%;
+      /* height: 100px; */
+      background: linear-gradient(#EB3428, #EB3428) left top,
+        linear-gradient(#EB3428, #EB3428) left top,
+        linear-gradient(#EB3428, #EB3428) right top,
+        linear-gradient(#EB3428, #EB3428) right top,
+        linear-gradient(#EB3428, #EB3428) left bottom,
+        linear-gradient(#EB3428, #EB3428) left bottom,
+        linear-gradient(#EB3428, #EB3428) right bottom,
+        linear-gradient(#EB3428, #EB3428) right bottom;
+      background-repeat: no-repeat;
+      background-size: 4px 45px, 45px 4px;
+      position: relative;
+    }
+
+    .count {
+      position: absolute;
+      top: -3%;
+      left: 34%;
+      font-size: 16px;
+      color: #222;
+    }
+
+    .count span {
+      color: #EB3428;
+    }
+
+    .payTips {
+      width: 60%;
+      text-align: center;
+      color: #999;
+      position: absolute;
+      bottom: -3%;
+      left: 21%;
+      font-size: 14px;
+    }
+
+    .qrcode {
+      width: 90%;
+      margin: 0 auto;
+      padding: 10px 0;
+    }
+
+    #lastStep h1 {
+      font-size: 26px;
+      color: #ff2e34;
+      padding: 15px;
+    }
+
+    .contTips {
+      color: #888;
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
+    .line {
+      width: 100%;
+      background: #666;
+      height: 1px;
+      margin: 25px 0;
+    }
+
+    footer {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    footer h2 {
+      color: #ff2e34;
+      padding-bottom: 15px;
+      font-size: 18px;
+    }
+
+    #lastStep h2 i {
+      font-size: 20px;
+      padding-right: 10px;
+    }
+
+    footer p {
+      color: #222;
+      font-size: 16px;
+      line-height: 1.6;
+      text-indent: 30px;
+    }
+
+    /*遮罩文字*/
+    .layui-m-layer2 .layui-m-layercont p {
+      font-size: 24px;
+    }
+
+    body .layui-m-layer0 .layui-m-layerchild {
+      width: 80%;
+    }
+
+    body .layui-m-layerchild {
+      /*border-radius: 20px;*/
+    }
+
+    body .layui-m-layerbtn span {
+      font-size: 16px;
+    }
+
+    body .layui-m-layerbtn {
+      /*height: 70px;*/
+      /*line-height: 70px;*/
+    }
+
+    /*弹窗*/
+    .alertCont {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      font-style: normal;
+    }
+
+    .alertCont p {
+      font-size: 28px;
+      color: #393D49;
+    }
+
+    .alertCont img {
+      width: 300px;
+      margin: 40px auto 60px;
+    }
+
+    .alertCont a {
+      display: block;
+      width: 320px;
+      background: #f3453e;
+      border: none;
+      color: #fff;
+      font-size: 26px;
+      height: 75px;
+      line-height: 75px;
+      border-radius: 50px;
+      text-align: center;
+      margin: 10px auto;
+    }
+
+    .alertCont a i {
+      font-size: 35px;
+      padding-right: 10px;
+    }
+
+    i.iconguanbi {
+      font-size: 50px;
+      color: #999;
+      margin: 0 0 10px 90%;
+    }
+
+    .newTips {
+      font-size: 16px;
+      color: #333;
+      line-height: 30px;
+    }
+
+    .myBtn {
+      display: block;
+      text-align: center;
+      width: 80%;
+      height: 40px;
+      line-height: 40px;
+      background: #D54434;
+      font-size: 16px;
+      color: #fff;
+      border-radius: 5px;
+      margin: 15px auto;
+    }
+  </style>
+</head>
+
+<body style="background: rgb(229, 55, 60);">
+  <div class="container">
+    <div id="lastStep">
+<!--      <img src="https://xin-prod.oss-cn-shenzhen.aliyuncs.com/xin-pay/static/images/headImg.png" alt="" class="headImg">-->
+      <h1>￥{{ amount }}</h1>
+      <div class="timeCount">
+        <p class="count">
+          <span class="min">0</span> 分 <span class="sec">0</span> 秒
+        </p>
+        <!-- 二维码 -->
+        <img src="{{ b64_img }}"
+          alt="" class="qrcode">
+        <p class="payTips">如未出码请重新下单</p>
+      </div>
+
+      <p class="contTips">订单号:<span>{{ sys_tx_id }}</span></p>
+        {% if payment_url %}
+            <a class="myBtn" href="{{ payment_url }}">立即支付</a>
+        {% else %}
+      <a class="myBtn">1. 请截屏保存至相册</a>
+      <a class="myBtn">2. 使用{{ payment_type }}APP扫码从相册中打开截图</a>
+        {% endif %}
+      <div class="line"></div>
+      <footer>
+        <h2><i class="iconfont icongantanhao"></i>温馨提示</h2>
+          {% if prompt_msgs %}
+              {% for msg in prompt_msgs %}
+              <p>{{ msg }}</p>
+              {% endfor %}
+          {% else %}
+        <p>1. 如付款失败，请重新发起支付订单;</p>
+        <p>2. 如充值未到账，请联系在线客服;</p>
+          {% endif %}
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    //倒计时方法
+    function resetTime(time) {
+      var timer = null;
+      var t = time;
+      var m = 0;
+      var s = 0;
+      m = Math.floor(t / 60 % 60);
+      m < 10 && (m = '0' + m);
+      s = Math.floor(t % 60);
+
+      function countDown() {
+        s--;
+        s < 10 && (s = '0' + s);
+        if (s.length >= 3) {
+          s = 59;
+          m = "0" + (Number(m) - 1);
+        }
+        if (m.length >= 3) {
+          m = '00';
+          s = '00';
+          clearInterval(timer);
+        }
+        document.querySelectorAll('.min')[0].innerHTML = m;
+        document.querySelectorAll('.sec')[0].innerHTML = s;
+        if ((m == '00') && (s == '00')) {
+          alert("订单已过期，请勿支付，请重新发起订单!");
+          // 关闭当前页面
+          history.back();
+        }
+      }
+
+      timer = setInterval(countDown, 1000);
+    }
+
+// 退出当前页面执行
+    window.onunload = function (e) { // ios 不支持 window.onbeforeunload()
+      // 将退出时间存于localstorage中
+      sessionStorage.setItem('leaveTime', new Date().getTime());
+    }
+
+
+    window.onload = function () {
+      let start_time = "{{ valid_time }}"; //倒计时长（秒）
+
+      // 进入页面执行
+      // 记录当前时间并转成时间戳
+      const now = new Date().getTime();
+      // 从缓存中获取用户上次退出的时间戳
+      const leaveTime = parseInt(sessionStorage.getItem('leaveTime'), 10);
+      // 判断是否为刷新，两次间隔在5s内判定为刷新操作
+      const refresh = (now - leaveTime) <= 2000;
+      if (refresh) {
+        // 返回上一页
+        history.back();
+      }
+      resetTime(start_time);
+    };
+  </script>
+
+</body>
+
+</html>

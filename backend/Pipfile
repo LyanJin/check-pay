@@ -1,0 +1,41 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask-script = "*"
+flask-migrate = "*"
+flask-restplus = "*"
+flask-wtf = "*"
+flask-redis = "*"
+blinker = "*"
+flask-testing = "*"
+nose = "*"
+coverage = "*"
+requests = "*"
+flask-httpauth = "*"
+phonenumbers = "*"
+boto3 = "*"
+fakeredis = "*"
+flask-limiter = "*"
+flask-apscheduler = "*"
+flask-cors = "*"
+gunicorn = "*"
+gevent = "*"
+pymysql = "*"
+celery = "*"
+yunpian-python-sdk = "*"
+urllib3 = "*"
+pycrypto = "*"
+flask-csv = "*"
+qrcode = "*"
+pillow = "*"
+python-logstash = "*"
+sentry-sdk = {extras = ["flask"],version = "==0.11.2"}
+geoip2 = "*"
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,6 @@
+api:  http://192.168.0.114:5000/doc/cashier/v1
+
+1. 检查手机号是否存在：   /auth/number/check
+2. 获取手机验证码：      /sms/get
+3. 验证手机验证码：      /sms/verify
+4. 用户注册：           /auth/register

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟商户充值</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h3>{{ title }}</h3>
+    <form role="form" class="form-horizontal" method="post"
+          action="{{ url_for('gateway_demo_merchant_withdraw') }}"
+          id="id_form"
+          onsubmit="return on_submit(this);"
+    >
+
+        <div class="form-group">
+            <label for="bank_type">银行类型选择：</label>
+            <select class="form-control" id="bank_type" name="bank_type">
+                <option value="">--请选择--</option>
+                {% for item in bank_types %}
+                <option value="{{ item.name }}">{{ item.desc }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">充值金额：</label>
+            <input type="text" class="form-control" id="amount" name="amount"
+                   {% if withdraw_config %}
+                   placeholder="限额：{{ withdraw_config.limit_min }}~{{ withdraw_config.limit_max }}"
+                   {% endif %}
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="card_no">收款卡号：</label>
+            <input type="text" class="form-control" id="card_no" name="card_no">
+        </div>
+        <div class="form-group">
+            <label for="account_name">收款人姓名：</label>
+            <input type="text" class="form-control" id="account_name" name="account_name">
+        </div>
+        <div class="form-group">
+            <label for="province">省份名称：</label>
+            <input type="text" class="form-control" id="province" name="province">
+        </div>
+        <div class="form-group">
+            <label for="city">城市名称：</label>
+            <input type="text" class="form-control" id="city" name="city">
+        </div>
+        <div class="form-group">
+            <label for="branch">支行名称(可选)：</label>
+            <input type="text" class="form-control" id="branch" name="branch">
+        </div>
+
+        <button type="submit" class="btn btn-primary">立即提现</button>
+
+    </form>
+    <hr>
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        <h5>平台订单号：{{sys_tx_id}}</h5>
+        <h5>商户订单号：{{mch_tx_id}}</h5>
+        <hr>
+        <h5>post_data: {{ post_data }}</h5>
+        <hr>
+        <h5>支付完成后(订单状态是成功或者失败)，如果通知（发货）状态不是"已完成"，需要手动通知商户：<br><br>
+            <a href="{{notify_url}}" target="_blank" class="btn btn-info" role="button"> 手动通知 {{notify_url}}</a>
+        </h5>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+
+    function on_submit(form_obj) {
+        if (form_obj.method == 'get') {
+            return true;
+        }
+
+        return true;
+    }
+</script>
+
+</body>
+</html>

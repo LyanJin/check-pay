@@ -1,0 +1,31 @@
+请求及相应Code说明文档
+
+1. 参数异常Code:
+            HttpCode: 400
+            ErrorCode: 1000
+
+2. 业务异常Code:
+            HttpCode: 400
+            ErrorCode: >1000
+
+3. 成功Code:
+            HttpCode: 200
+            ErrorCode: 200
+
+4. 其它HTTP层Code，每个API统一处理:
+
+鉴权失败：
+            HttpCode: 401
+            ErrorCode: 401
+没有权限，拒绝访问：
+            HttpCode: 403
+            ErrorCode: 403
+未找到资源：
+            HttpCode: 404
+            ErrorCode: 404
+请求频率限制：
+            HttpCode: 429
+            ErrorCode: 429
+系统异常：
+            HttpCode: 500
+            ErrorCode: 500

@@ -1,0 +1,50 @@
+FROM python:3.7-alpine
+
+LABEL maintainer="kevin <nullclard@gmail.com>"
+
+WORKDIR /www/
+
+COPY pipenv-install.py Pipfile.lock ./
+
+# tzdata for system timezone
+# curl for docker healthcheck
+# pillow depends on zlib zlib-dev
+# pymysql require cryptography to connect to mysql, so we need install:
+# gcc musl-dev python3-dev libffi-dev openssl-dev
+# https://cryptography.io/en/latest/installation/
+# ca-certificates is use to https
+# python3-dev libffi-dev openssl-dev ca-certificates
+# gcc musl-dev for gevent
+RUN apk add --no-cache \
+        # Pillow depenencies
+        libjpeg \
+        jpeg-dev \
+        zlib \
+        zlib-dev \
+        # gevent depenencies
+        gcc \
+        musl-dev \
+        # pymysql depenencies
+        python3-dev \
+        libffi-dev \
+        openssl-dev \
+        # timezone
+        tzdata \
+        # docker healthcheck
+        curl \
+    && \
+    python pipenv-install.py && \
+    # rm apk packages
+    apk del \
+        jpeg-dev \
+        zlib-dev \
+        gcc musl-dev python3-dev libffi-dev openssl-dev && \
+    # rm cache etc.
+    rm -fr /usr/local/lib/python3.7/site-packages/pip && \
+    rm -fr /usr/local/lib/python3.7/site-packages/setuptools && \
+    rm -rf /var/cache/apk/* /root/.cache /tmp/*
+
+ENV TZ="Asia/Shanghai"
+
+# 默认启动一个shell就好了
+CMD ['sh']

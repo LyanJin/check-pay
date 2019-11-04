@@ -1,0 +1,33 @@
+{
+  "name": "back-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "test": "vue-cli-service build --mode testing",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "element-ui": "^2.12.0",
+    "js-md5": "^0.7.3",
+    "time-formater": "^1.1.2",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.7",
+    "vue-template-compiler": "^2.6.10",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.9.0",
+    "@vue/cli-service": "^3.11.0",
+    "babel-eslint": "^10.0.1",
+    "compression-webpack-plugin": "^3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "terser-webpack-plugin": "^1.4.1"
+  }
+}

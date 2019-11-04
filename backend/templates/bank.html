@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>转账页面</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>HMPAY</title>
+
+    <script src="./clipboard.min.js"></script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        blockquote,
+        body,
+        button,
+        dd,
+        div,
+        dl,
+        dt,
+        form,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        input,
+        li,
+        ol,
+        p,
+        pre,
+        td,
+        textarea,
+        th,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mainDiv {
+            margin: auto;
+            width: 100vw;
+            background: #fff;
+        }
+
+        .countHead {
+            background: linear-gradient(to right, #609FFF 0%, #3367EC 100%);
+            margin-top: 11vw;
+            text-align: center;
+            color: #fff;
+            font-size: 4.5vw;
+            line-height: 2.5;
+            width: 100vw;
+        }
+
+        .countDown {
+            text-align: center;
+            color: #333;
+            font-size: 4.5vw;
+            line-height: 2.5;
+            height: 11vw;
+            background: #F7EAAE;
+            position: fixed;
+            width: 100vw;
+            top: 0vw;
+        }
+
+        h3 {
+            font-size: 5vw;
+            padding: 4vw 3vw 0 3vw;
+        }
+
+        .payInfo {
+            width: 96vw;
+            margin: 2vw;
+            font-size: 4vw;
+            line-height: 2.8;
+            margin-bottom: 3vw;
+        }
+
+        .payInfo li {
+            display: table;
+            width: 100%;
+            border-bottom: dashed 1px #ccc;
+        }
+
+        .payInfo li span {
+            float: left;
+            color: #333;
+            width: 28vw;
+            text-align: right;
+        }
+
+        .payInfo li i {
+            float: left;
+            color: #CB0000;
+            font-style: normal;
+        }
+
+        .payInfo li button {
+            float: right;
+            margin-top: 2vw;
+            margin-right: 2vw;
+        }
+
+        .layui-btn-xs {
+            height: 22px;
+            line-height: 22px;
+            padding: 0 5px;
+            font-size: 12px;
+        }
+
+        .layui-btn-warm {
+            background-color: #609FFF;
+        }
+
+        .layui-btn-danger {
+            background: #609fff;
+        }
+
+        .layui-btn {
+            display: inline-block;
+            color: #fff;
+            white-space: nowrap;
+            text-align: center;
+            border: none;
+            border-radius: 2px;
+            border-radius: 4px;
+        }
+
+        .layui-btn-lg {
+            height: 44px;
+            line-height: 44px;
+            padding: 0 25px;
+            font-size: 16px;
+        }
+
+        .h3Tip {
+            padding: 3vw;
+            font-size: 4vw;
+            line-height: 2;
+            background: #F4F4F4;
+        }
+
+        .layui-form-item {
+            margin-bottom: 15px;
+            clear: both;
+        }
+
+        .userName {
+            font-size: 4vw;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="mainDiv">
+
+    <div class="countDown">
+        为保障充值成功，请在 <span class="min">0</span>:<span class="sec">0</span> 内完成转账
+    </div>
+    <div class="countHead">
+        注意：若转账没填正确附言，将延迟到账。
+    </div>
+
+
+    <h3>收款方信息<span style="color:#ff0000">（不支持微信与支付宝转账）</span></h3>
+    <div style="display:table; width:100%;">
+        <div class="payInfo">
+            <li>
+                <span>收款银行：</span>
+                <i id="bankName">{{CardName}}</i>
+            </li>
+
+            <li>
+                <span>收款账户名：</span>
+                <i id="name">{{BankName}}</i>
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-xs" onclick="copy('{{BankName}}')">
+                    复制
+                </button>
+            </li>
+            <li>
+                <span>收款账户：</span>
+                <i id="account">{{CardNumber}}</i>
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-xs"
+                        onclick="copy('{{CardNumber}}')">
+                    复制
+                </button>
+            </li>
+            <li>
+                <span>汇款金额：</span>
+                <i>￥</i><i id="money">{{amount}}</i>
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-xs"
+                        onclick="copy('{{amount}}')">
+                    复制
+                </button>
+            </li>
+            <li>
+                <span>附言：</span>
+                <i id="ps">{{tx_id}}</i>
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-xs"
+                        onclick="copy('{{tx_id}}')">
+                    复制
+                </button>
+            </li>
+            <li>
+                <span>出款账户名：</span>
+                <input class="userName" type="text" placeholder="请输入姓名(必填)">
+            </li>
+        </div>
+
+    </div>
+
+    <div class="layui-form-item">
+        <div style="  text-align:center; padding:5vw 0 0 0;">
+            <button class="layui-btn layui-btn-lg layui-btn-danger" type="button" onclick="confirmPay();">　我已完成转账　
+            </button>
+        </div>
+    </div>
+
+    <div class="h3Tip">
+        <h3 style="color:#ff0000; font-weight:bold; padding-top:0;">注意事项</h3>
+        1、每次充值收款账号可能是不同的，请注意确认收款账号。转错账号无法充值成功。<br>
+        2、请使用手机银行或网银转账，同行/跨行均可，转账时转账附言一定要写！否则无法充值成功。<br>
+        <span style="color:#ff0000">3、若转账金额不正确，会导致充值失败。请在转账时，填写正确的转账金额。</span>
+    </div>
+
+</div>
+
+
+<script>
+    //复制信息
+    function copy(data) {
+        console.warn(data)
+        let textArea = document.createElement("textarea");
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '0';
+        textArea.style.width = '2px';
+        textArea.style.height = '2px';
+        textArea.value = data;
+        document.body.appendChild(textArea);
+        if (navigator.userAgent.match(/iphone|ipad|ipod/i)) { // iOS browser
+            textArea.setSelectionRange(0, 9999);
+            console.warn('ios')
+        } else {
+            textArea.select();
+            console.warn('android')
+        }
+        try {
+            let successful = document.execCommand('copy');
+            if (successful) {
+                alert("复制成功");
+            } else {
+                alert("该浏览器不支持点击复制");
+            }
+        } catch (err) {
+            alert("该浏览器不支持点击复制");
+        }
+        document.body.removeChild(textArea);
+    };
+
+    //确认已汇款
+    function confirmPay() {
+        // 删除空格
+        document.querySelectorAll('.userName')[0].value = document.querySelectorAll('.userName')[0].value.replace(/\s+/g,
+            "")
+        if (document.querySelectorAll('.userName')[0].value) {
+            var r = confirm("确认您已完成转账吗？");
+            if (r == true) {
+                console.warn('您按了确认！');
+                SubmitArticle('{{tx_id}}', '{{amount}}', '{{CardNumber}}', document.querySelectorAll('.userName')[0].value, '{{CardName}}');
+                console.warn("成功")
+            } else {
+                console.warn('您按了取消！')
+            }
+        } else {
+            alert("请输入出款账户名!");
+
+        }
+    }
+
+    function SubmitArticle(order_id, amount, card_number, user_name, bank_name) {
+        let xmlobj = new XMLHttpRequest(); //创建对象
+        let url = "/api/cashier/v1/deposit/notify/deposit"
+        let parm = "tx_id=" + order_id + "&amount=" + amount + "&card_number=" + card_number + "&user_name=" + user_name + "&bank_name=" + bank_name; //构造URL参数
+        xmlobj.open("POST", url, true);
+        xmlobj.setRequestHeader("cache-control", "no-cache");
+        xmlobj.setRequestHeader("contentType", "text/html;charset=uft-8") //指定发送的编码
+        xmlobj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;"); //设置请求头信息
+        // xmlobj.onreadystatechange = StatHandler; //判断URL调用的状态值并处理
+        xmlobj.send(parm); //设置为发送给服务器数据
+        // 关闭当前页面
+        history.back();
+    }
+</script>
+
+
+<script>
+    let end = '{{start_time}}'
+    let start = parseInt((new Date().getTime() / 1000) - end);
+    let start_time = 904 - start > 0 ? 904 - start : 1; //倒计时长（秒）
+    console.warn(end)
+    console.warn(new Date().getTime())
+    console.warn(start_time)
+
+    //倒计时方法
+    function resetTime(time) {
+        var timer = null;
+        var t = time;
+        var m = 0;
+        var s = 0;
+        m = Math.floor(t / 60 % 60);
+        m < 10 && (m = '0' + m);
+        s = Math.floor(t % 60);
+
+        function countDown() {
+            s--;
+            s < 10 && (s = '0' + s);
+            if (s.length >= 3) {
+                s = 59;
+                if (time > 600) {
+                    m = (Number(m) - 1);
+                } else {
+                    m = "0" + (Number(m) - 1);
+                }
+            }
+
+            document.querySelectorAll('.min')[0].innerHTML = m;
+            document.querySelectorAll('.sec')[0].innerHTML = s;
+            if ((m == '00') && (s == '00')) {
+                alert("订单已过期，请勿支付，请重新发起订单!");
+                // 关闭当前页面
+                history.back();
+                document.body.innerHTML =
+                    '<div style="width: 100%;margin-top: 200px;height: 50px;font-size: 30px;text-align: center;font-weight: bold;">订单已过期，请重新发起订单!</div>'
+            }
+        }
+
+        timer = setInterval(countDown, 1000);
+    }
+
+    window.onload = function () {
+        resetTime(start_time);
+    };
+</script>
+
+</body>
+
+</html>

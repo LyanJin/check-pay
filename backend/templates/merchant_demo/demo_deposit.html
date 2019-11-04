@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟商户充值</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h3>{{ title }}</h3>
+    <form role="form" class="form-horizontal" method="post"
+          action="{{ url_for('gateway_demo_merchant_deposit') }}"
+          id="id_form"
+          onsubmit="return on_submit(this);"
+    >
+
+        <div class="form-group">
+            <label for="payment_type">支付类型选择：</label>
+            <select class="form-control" id="payment_type" name="payment_type">
+                <option value="">--请选择--</option>
+                {% for item in payment_types %}
+                    {% if item.fixed_amounts %}
+                        <option value="{{ item.name }}">{{ item.name }}，限额：{{ item.fixed_amounts }}</option>
+                    {% else %}
+                        <option value="{{ item.name }}">{{ item.name }}，限额：{{ item.limit_min }}~{{ item.limit_max }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">充值金额：</label>
+            <input type="text" class="form-control" id="amount" name="amount">
+        </div>
+
+        <button type="submit" class="btn btn-primary">立即充值</button>
+
+    </form>
+    <hr>
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+        <h5>重定向URL：<br><br>
+            <a href="{{redirect_url}}" target="_blank" class="btn btn-info" role="button"> 继续支付 {{redirect_url}}</a>
+        </h5>
+        <h5>有效时间：{{valid_time}}秒</h5>
+        <h5>平台订单号：{{sys_tx_id}}</h5>
+        <h5>商户订单号：{{mch_tx_id}}</h5>
+        <hr>
+        <h5>post_data: {{ post_data }}</h5>
+        <hr>
+        <h5>支付完成后(订单状态是成功或者失败)，如果通知（发货）状态不是"已完成"，需要手动通知商户：<br><br>
+            <a href="{{notify_url}}" target="_blank" class="btn btn-info" role="button"> 手动通知 {{notify_url}}</a>
+        </h5>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
+</div>
+
+<script type="text/javascript">
+    function on_select_change(select_obj) {
+        var option = select_obj.options[select_obj.selectedIndex];
+        var form = document.getElementById('id_form');
+        form.method = 'get';
+        form.submit();
+    }
+
+    function on_submit(form_obj) {
+        if (form_obj.method == 'get') {
+            return true;
+        }
+
+        var select_obj = document.getElementById('merchant_id');
+        var option = select_obj.options[select_obj.selectedIndex];
+        if (!option.value) {
+            alert('请选择商户!');
+            return false;
+        }
+
+        var select_obj = document.getElementById('payment_type');
+        var option = select_obj.options[select_obj.selectedIndex];
+        if (!option.value) {
+            alert('请选择支付类型!');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+# vue的nodejs编译环境
+FROM node:lts-alpine as build-stage
+WORKDIR /app
+COPY ./bank-admin/package*.json ./
+RUN npm install
